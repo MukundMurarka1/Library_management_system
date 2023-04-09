@@ -1,0 +1,65 @@
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    .main
+    {
+        width: 100%;
+       
+        background: linear-gradient(to top, rgba(0,0,0,0.5)50%, rgba(0,0,0,0.5)50%), url(image12.jpg); 
+        background-position: center;
+        background-size: cover;
+        height: 109vh;
+    }
+
+    .navbar{
+        width: 900px;
+        height: 75px;
+        margin: 20px;
+    }
+    .icon{
+        width: 200px;
+       float: left;
+        height: 70px;
+    }
+    .logo{
+        color: rgb(31, 209, 209);
+        margin-left: 5px;
+       
+        font-size: 30px;
+        font-family: Arial;
+        padding-left: 10px;
+        padding-top: 10px;
+    }
+
+    .menu{
+        width: 400px;
+        float: right;
+
+        height: 70px;
+    }
+    ul{
+        float: left;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+
+    }
+    ul li{
+        list-style: none;
+        margin-left: 62px;
+        margin-top: 27px;
+        font-size: 14px;
+    }
+    ul li a{
+        text-decoration: none;
+        color: rgb(31, 209, 209);
+        font-family: Arial;
+        font-weight: bold;
+        transition: 0.4 ease-in-out;
+        border:  solid;
+    }
+    ul li a:hover{
+        color:darkgray
+    }
