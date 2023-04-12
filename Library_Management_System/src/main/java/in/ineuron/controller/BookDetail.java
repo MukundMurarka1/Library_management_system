@@ -18,9 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 @WebServlet(
-		urlPatterns = { 
-				"/information"
-		}, 
+		urlPatterns = {"/information/*" }, 
 		initParams = { 
 				@WebInitParam(name = "url", value = "jdbc:mysql:///librarymanagement"), 
 				@WebInitParam(name = "name", value = "root"), 
@@ -28,47 +26,17 @@ import javax.servlet.http.HttpServletResponse;
 		})
 public class BookDetail extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	Connection connection = null;
-	
-	static {
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			System.out.println("Driver loaded successfully.......");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		
-	}
-	
-	@Override
-	public void init() throws ServletException {
-		String url = getInitParameter("url");
-		String name= getInitParameter("name");
-		String password = getInitParameter("password");
-		
-		System.out.println( url+ "" + name+ " " +password);
-		
-		try {
-		connection = DriverManager.getConnection(url,name,password);
-		
-		if(connection != null)
-		{
-			System.out.println("Connection establisher successfully......");
-		}
-		
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
 
+	
+	
 	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
+		if(request.getRequestURI().endsWith("insert")) {
+		String insertquery = "insert into bookinformation (Book_id, Book_Name, Author_name, Book_type, Book_price ) values (?,?,?,?,?) ";
 		PreparedStatement pstmt = null;
 		ResultSet resultset = null;
+		Connection connection = null;
 		PrintWriter write = response.getWriter();
 		response.setContentType("text/html");
 		
@@ -77,11 +45,27 @@ public class BookDetail extends HttpServlet {
 		String authorname= request.getParameter("author_name");
 		String booktype= request.getParameter("book_type");
 		String bookprice = request.getParameter("book_price");
-				
-		String insertquery = "insert into bookinformation (Book_id, Book_Name, Author_name, Book_type, Book_price ) values (?,?,?,?,?) ";
+		
+		String url = getInitParameter("url");
+		String name= getInitParameter("name");
+		String password = getInitParameter("password");
+		
+		System.out.println( url+ "" + name+ " " +password);
 		
 		try {
-			if(connection != null) {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			System.out.println("Driver loaded successfully.......");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+		try {
+		connection = DriverManager.getConnection(url,name,password);
+		
+			System.out.println("Connection establisher successfully......");
+			if(connection != null)
 			pstmt = connection.prepareStatement(insertquery);
 			System.out.println(" Statement created Successfully .....");
 			
@@ -100,29 +84,23 @@ public class BookDetail extends HttpServlet {
 					write.println("<h1 style='color:red; text-align:center'> Opps ! some error Occured </h1>");
 				}
 			}
-			}
+			
 		}catch(SQLException se) {
 			se.printStackTrace();
 			
-		}
+		}		
 		
-		
-	
-		
-		
+	}
 	}
 	
 	@Override
-	public void destroy() {
-		try {
-			if(connection != null) {
-				connection.close();
-			}
-		}catch(SQLException se) {
-			se.printStackTrace();
-		}
-		
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+	{
+		doGet(request,response);
 	}
+
+	
+	
 	
 	}
 
